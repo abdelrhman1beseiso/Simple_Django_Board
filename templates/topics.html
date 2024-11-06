@@ -9,9 +9,8 @@
 
 {% block content %}
 <div class="mb-4">
-    <a href="{% url 'new_topic' board.pk %}" class="btn btn-primary">New topic</a>
+<a href="{% url 'new_topic' board.pk %}" class="btn btn-primary">New topic</a>
 </div>
-
 <table class="table">
     <thead class="thead-dark">
     <tr>
@@ -25,7 +24,7 @@
     <tbody>
     {%for topic in topics%}
     <tr>
-        <td><a href ="{% url 'topic_posts' board.pk topic.pk %}">{{ topic.subject}}</a></td>
+        <td><a href="{%url 'topic_posts' board.pk topic.pk%}"> {{topic.subject}}</a></td>
         <td>{{ topic.created_by.username}}</td>
         <td>{{topic.comments}}</td>
         <td>{{topic.views}}</td>
@@ -36,44 +35,36 @@
 
     </tbody>
 </table>
-{% if topics.has_other_pages %}
-  <nav aria-label="Topics pagination" class="mb-4">
-    <ul class="pagination">
-      {% if topics.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ topics.previous_page_number }}">Previous</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Previous</span>
-        </li>
-      {% endif %}
+<ul class="pagination">
+    {%if topics.has_previous%}
+    <li class="page-item">
+        <a class="page-link" href="?page={{topics.previous_page_number}}">Previous</a>
+    </li>
+    {%endif%}
 
-      {% for page_num in topics.paginator.page_range %}
-        {% if topics.number == page_num %}
-          <li class="page-item active">
-            <span class="page-link">
-              {{ page_num }}
-              <span class="sr-only">(current)</span>
-            </span>
-          </li>
-        {% else %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
+    {%for page_num in topics.paginator.page_range%}
+    {%if topics.number == page_num%}
+    <li class="page-item active">
+        {{page_num}}
+        <span>(current)</span>
+    </li>
+    {%else%}
+    <li class="page-item">
+        {{page_num}}
+        <a class="page-link" href="?page={{page_num}}">{{page_num}}</a>
+    </li>
+    {%endif%}
+    {%endfor%}
 
-      {% if topics.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ topics.next_page_number }}">Next</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Next</span>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
-{% endif %}
+    {%if topics.has_next%}
+    <li class="page-item">
+        <a class="page-link" href="?page={{topics.next_page_number}}">Next</a>
+    </li>
+    {%else%}
+    <li class="page-item disable">
+    <span>Next</span>    
+    </li>
+    {%endif%}
+
+</ul>
 {% endblock %}
